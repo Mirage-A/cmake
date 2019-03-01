@@ -1,0 +1,1 @@
+open('index.h', 'tw', encoding='utf-8').close()

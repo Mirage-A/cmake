@@ -1,11 +1,21 @@
-project(hello_world)
+cmake_minimum_required(VERSION 2.8)
 
-set(SOURCE_EXE C/main.cpp)
+project(hello_cmake)
 
-set(SOURCE_LIB B/lib.h)
+enable_language(CXX)
 
-add_library(foo STATIC ${SOURCE_LIB})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
-add_executable(main ${SOURCE_EXE})
+execute_process(COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/A/preparing.py)
 
-target_link_libraries(main foo)
+set(SOURCES_LIST ${CMAKE_CURRENT_SOURCE_DIR}/C/main.cpp ${CMAKE_CURRENT_SOURCE_DIR}/C/main.h)
+
+#include(${CMAKE_CURRENT_SOURCE_DIR}/A/index.h)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/B)
+
+set_target_properties(hello_lib PROPERTIES LINKER_LANGUAGE CXX)
+
+add_executable(hello_cmake ${SOURCES_LIST})
+
+target_link_libraries(hello_cmake hello_lib)
